@@ -169,11 +169,11 @@ bot.on("callback_query", async (query) => {
   bot.answerCallbackQuery(query.id);
 });
 
-// asosiy logik qismi, inputlar bilan ishlangan state saqlab pdf generate qismi
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const text = msg.text;
   const first_name = msg.chat.first_name;
+
   if (!state[chatId]) return;
 
   const userState = state[chatId];
@@ -181,15 +181,14 @@ bot.on("message", async (msg) => {
 
   const currentInput = inputs[userState.template][currentStep];
   if (!currentInput) return;
-  userState.data[currentInput.key] = text;
 
+  userState.data[currentInput.key] = text;
   userState.step++;
 
   if (userState.step < inputs[userState.template].length) {
-    const nextQuestions = inputs[userState.template][userState.step].question;
-    bot.sendMessage(chatId, nextQuestions);
+    const nextQuestion = inputs[userState.template][userState.step].question;
+    bot.sendMessage(chatId, nextQuestion);
   } else {
-    // PDF yaratish qismi
     const typingInterval = setInterval(() => {
       bot.sendChatAction(chatId, "upload_document");
     }, 3000);
@@ -198,16 +197,12 @@ bot.on("message", async (msg) => {
 
     const templateName = userState.template;
     const htmlPath = path.join(__dirname, "templates", `${templateName}.html`);
-
     let html = fs.readFileSync(htmlPath, "utf-8");
 
-    // Ma'lumotlarni HTMLga qo'yish
     for (let key in userState.data) {
       html = html.replaceAll(`{{${key}}}`, userState.data[key]);
     }
 
-    // Puppeteer browser ishga tushirish
-    // Puppeteer browser launch
     const browser = await puppeteer.launch({
       headless: "new",
       args: [
@@ -222,7 +217,6 @@ bot.on("message", async (msg) => {
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "networkidle0" });
 
-    // PDFni buffer orqali yaratish (fayl saqlamasdan)
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
@@ -230,16 +224,15 @@ bot.on("message", async (msg) => {
 
     await browser.close();
 
-    // PDFni foydalanuvchiga yuborish
-    // PDFni foydalanuvchiga yuborish
-    await bot.sendDocument(chatId, pdfBuffer, {
-      filename: `resume-${first_name}.pdf`,
-    });
+    const fileName = `resume-${first_name}.pdf`;
+    const filePath = path.join(__dirname, fileName);
+    fs.writeFileSync(filePath, pdfBuffer);
 
-    // PDFni adminga yuborish
-    await bot.sendDocument(ADMIN, pdfBuffer, {
-      filename: `resume-${first_name}.pdf`,
-    });
+    await bot.sendDocument(chatId, filePath, { filename: fileName });
+
+    await bot.sendDocument(ADMIN, filePath, { filename: fileName });
+
+    fs.unlinkSync(filePath);
 
     clearInterval(typingInterval);
 
