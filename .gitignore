@@ -1,0 +1,21 @@
+# Node.js paketlari
+node_modules/
+
+# Maxfiy ma'lumotlar
+.env
+
+# Bot tomonidan yaratiladigan PDF fayllar
+pdfs/
+
+# OS fayllari
+.DS_Store
+Thumbs.db
+
+# Log fayllar
+*.log
+
+# Puppeteer cache (agar ishlatilsa)
+.puppeteer/
+
+# VSCode sozlamalari (agar ishlatilsa)
+.vscode/

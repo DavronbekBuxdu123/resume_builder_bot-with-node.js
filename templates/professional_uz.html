@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Professional Rezyume</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f3f4f6;
+        color: #111827;
+      }
+      .container {
+        max-width: 900px;
+        margin: 30px auto;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background: #0f172a;
+        color: #fff;
+        padding: 24px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .header-left h1 {
+        margin: 0;
+        font-size: 28px;
+      }
+      .header-left p {
+        margin: 6px 0 0;
+        font-size: 14px;
+        opacity: 0.9;
+      }
+      .header-right {
+        text-align: right;
+        font-size: 13px;
+        opacity: 0.9;
+      }
+      .header-right div {
+        margin: 4px 0;
+      }
+      .content {
+        padding: 28px 30px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 26px;
+      }
+      .section {
+        background: #f9fafb;
+        border-radius: 10px;
+        padding: 18px;
+      }
+      .section h2 {
+        margin: 0 0 14px;
+        font-size: 16px;
+        color: #0f172a;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 10px;
+      }
+      .section p,
+      .section li {
+        font-size: 13px;
+        line-height: 1.6;
+        margin: 0;
+      }
+      .section ul {
+        padding-left: 18px;
+        margin: 0;
+      }
+      .skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .skill {
+        background: #0f172a;
+        color: #fff;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+      }
+      .footer {
+        padding: 18px 30px;
+        background: #f3f4f6;
+        font-size: 12px;
+        color: #6b7280;
+        text-align: center;
+      }
+      @media print {
+        .content {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 768px) {
+        .content {
+          grid-template-columns: 1fr;
+        }
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        .header-right {
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-left">
+          <h1>{{name}}</h1>
+          <p>{{title}} | {{location}}</p>
+        </div>
+        <div class="header-right">
+          <div>{{phone}}</div>
+          <div>{{email}}</div>
+          <div>{{linkedin}}</div>
+          <div>{{github}}</div>
+          <div>{{website}}</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="section">
+          <h2>Professional Ma’lumot</h2>
+          <p>{{summary}}</p>
+        </div>
+
+        <div class="section">
+          <h2>Ko‘nikmalar</h2>
+          <div class="skills">{{skills}}</div>
+        </div>
+
+        <div class="section">
+          <h2>Tajriba</h2>
+          {{experience}}
+        </div>
+
+        <div class="section">
+          <h2>Ta’lim</h2>
+          {{education}}
+        </div>
+
+        <div class="section">
+          <h2>Loyihalar</h2>
+          <ul>
+            {{projects}}
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer">rezume_builder_bot orqali tayyorlangan rezyume</div>
+    </div>
+  </body>
+</html>

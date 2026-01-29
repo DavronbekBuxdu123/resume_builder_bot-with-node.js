@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 40px;
+        color: #111;
+        max-width: 1000px;
+        display: flex;
+        flex-direction: column;
+      }
+      .name {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 0;
+      }
+      .title {
+        font-size: 20px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        color: #333;
+      }
+      .info {
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+      .info span {
+        margin-right: 15px;
+      }
+      .links a {
+        font-size: 20px;
+        color: #1a73e8;
+        margin-right: 15px;
+        text-decoration: none;
+      }
+      .summary {
+        color: #777;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="name">{{name}}</div>
+    <div class="title">{{title}}</div>
+
+    <div class="info">
+      <span>{{location}}</span>
+      <span style="color: #1a73e8">{{phone}}</span>
+      <span style="color: #1a73e8">{{email}}</span>
+    </div>
+
+    <div class="links">
+      <a href="{{linkedin}}"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      <a href="{{github}}"><i class="fab fa-github"></i> Github</a>
+      <a href="{{website}}"><i class="fas fa-globe"></i> Website</a>
+    </div>
+
+    <div class="summary">{{summary}}</div>
+  </body>
+</html>
