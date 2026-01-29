@@ -189,6 +189,7 @@ bot.on("message", async (msg) => {
     const nextQuestions = inputs[userState.template][userState.step].question;
     bot.sendMessage(chatId, nextQuestions);
   } else {
+    // PDF yaratish qismi
     const typingInterval = setInterval(() => {
       bot.sendChatAction(chatId, "upload_document");
     }, 3000);
@@ -200,40 +201,48 @@ bot.on("message", async (msg) => {
 
     let html = fs.readFileSync(htmlPath, "utf-8");
 
+    // Ma'lumotlarni HTMLga qo'yish
     for (let key in userState.data) {
       html = html.replaceAll(`{{${key}}}`, userState.data[key]);
     }
 
+    // Puppeteer browser ishga tushirish
     const browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     const page = await browser.newPage();
-
     await page.setContent(html, { waitUntil: "networkidle0" });
 
-    const pdfPath = path.join(
-      __dirname,
-      "pdfs",
-      `resume-${first_name}-${Date.now()}.pdf`
-    );
-
-    await page.pdf({
-      path: pdfPath,
+    // PDFni buffer orqali yaratish (fayl saqlamasdan)
+    const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
     });
 
     await browser.close();
 
-    await bot.sendDocument(chatId, pdfPath);
+    // PDFni foydalanuvchiga yuborish
+    await bot.sendDocument(
+      chatId,
+      pdfBuffer,
+      {},
+      { filename: `resume-${first_name}.pdf` }
+    );
+
+    // PDFni adminga yuborish
+    await bot.sendDocument(
+      ADMIN,
+      pdfBuffer,
+      {},
+      { filename: `resume-${first_name}.pdf` }
+    );
+
     clearInterval(typingInterval);
-    await bot.sendDocument(ADMIN, pdfPath);
+
     bot.editMessageText("PDF tayyor ✅", {
       chat_id: chatId,
       message_id: editMsg.message_id,
     });
-
-    fs.unlink(pdfPath, (err) => err && console.error(err));
   }
 });
