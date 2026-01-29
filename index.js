@@ -207,8 +207,16 @@ bot.on("message", async (msg) => {
     }
 
     // Puppeteer browser ishga tushirish
+    // Puppeteer browser launch
     const browser = await puppeteer.launch({
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      headless: "new",
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-accelerated-2d-canvas",
+        "--disable-gpu",
+      ],
     });
 
     const page = await browser.newPage();
@@ -223,20 +231,15 @@ bot.on("message", async (msg) => {
     await browser.close();
 
     // PDFni foydalanuvchiga yuborish
-    await bot.sendDocument(
-      chatId,
-      pdfBuffer,
-      {},
-      { filename: `resume-${first_name}.pdf` }
-    );
+    // PDFni foydalanuvchiga yuborish
+    await bot.sendDocument(chatId, pdfBuffer, {
+      filename: `resume-${first_name}.pdf`,
+    });
 
     // PDFni adminga yuborish
-    await bot.sendDocument(
-      ADMIN,
-      pdfBuffer,
-      {},
-      { filename: `resume-${first_name}.pdf` }
-    );
+    await bot.sendDocument(ADMIN, pdfBuffer, {
+      filename: `resume-${first_name}.pdf`,
+    });
 
     clearInterval(typingInterval);
 
